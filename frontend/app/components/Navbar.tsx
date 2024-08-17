@@ -19,7 +19,7 @@ const Navbar = async () => {
             }
             {session.logged_in && 
             <>  
-                <Link href='/'>Home</Link>
+                <Link href='/note_session'>Note Sessions</Link>
                 <Link href='/'>Quizzes</Link>
                 <Link href='/'> ChatBot </Link>
                 <LogoutForm/>

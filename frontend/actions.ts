@@ -3,8 +3,10 @@ import { getIronSession } from "iron-session"
 import { SessionData, defaultSession, sessionOptions } from "./lib"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import TurndownService from 'turndown'
 
 export const getSession = async () => {
+    
     const session = await getIronSession<SessionData>(cookies(), sessionOptions)
 
 
@@ -24,11 +26,28 @@ export const login = async (email: string, password: string) => {
         },
         body: JSON.stringify({ email: email, password: password })})
         .then(res => res.json())
-        .then((res) => {
+        .then(async (res) => {
             if (res.error) {
                 console.log(res.error)
             }
             else {
+                let response = await fetch('http://192.168.2.66:5000/get_notes', {
+                    method: "POST",
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: res.User })})
+                .then(response => response.json())
+                .then((response) => {
+                    if (!response.error) {
+                        console.log(response)
+                        const notes = response.map((doc:{ id:number | string, name:string }) => {
+                            return doc.content ? { id: doc.id, name: doc.name, content: doc.content } : { id: doc.id, name: doc.name, content: 'empty document' }
+                        })
+                        session.noteSessions = notes
+                        console.log(notes)
+                    }
+                })
                 session.userId=res.User
                 session.email=email
                 session.logged_in=true
@@ -61,4 +80,32 @@ export const logout = async () => {
     const session = await getSession();
     session.destroy()
     redirect('/')
+}
+
+const turndownService = new TurndownService()
+
+const htmlToMarkdown = (html: string): string => {
+    const result = turndownService.turndown(html)
+    console.log(result)
+    return result
+}
+
+export const update_notes = async (id: number, content: string) => {
+    const session = await getSession()
+    let res = await fetch(`http://192.168.2.66:5000/update_notes/${id}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: htmlToMarkdown(content) })})
+        .then(res => res.json())
+        .then(res => {
+            if (res.error) {
+                console.log(res.error)
+            } else {
+                console.log(res.message)
+                return res.message
+            }
+        })
+
 }
