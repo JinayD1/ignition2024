@@ -30,8 +30,7 @@ const Page = () => {
         <input type="email" placeholder='Username' value={email} onChange={e => setEmail(e.target.value)}/>
         <input type="password" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}/>
         <input type="submit" value="SIGN UP"/>
-        <div className="remember-forgot">
-          <label><input type="checkbox"/> Remember Me</label>
+        <div className="terms-of-service">
           <a href="#">Terms of Service</a>
         </div>
       </form>
