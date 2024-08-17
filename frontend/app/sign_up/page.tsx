@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from 'react'
 import Link from 'next/link'
+import "./signup.css"
 
-const page = () => {
+const Page = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -19,20 +20,30 @@ const page = () => {
   }
 
   return (
-    <>
-        <h4>Sign Up</h4>
-        <form onSubmit={(e) => {
-          e.preventDefault()
-          sign_up()
-          }}>
-            <input type="email" placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
-            <input type="password" placeholder='password' value={password} onChange={e => setPassword(e.target.value)}/>
-            <input type="submit" name='Submit'/>
-            <h6>{message}</h6>
-        </form>
-        <p>Already have an account?&nbsp;</p><Link href='/login'>Log in!</Link>
-    </>
+    <div className="container">
+      <h4>Sign Up</h4>
+      <p>Create an account</p>
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        sign_up()
+      }}>
+        <input type="email" placeholder='Username' value={email} onChange={e => setEmail(e.target.value)}/>
+        <input type="password" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}/>
+        <input type="submit" value="SIGN UP"/>
+        <div className="remember-forgot">
+          <label><input type="checkbox"/> Remember Me</label>
+          <a href="#">Terms of Service</a>
+        </div>
+      </form>
+      {message && <h6>{message}</h6>}
+      <p>— Or Sign Up With —</p>
+      <div className="social-login">
+        <button>Facebook</button>
+        <button>Google</button>
+      </div>
+      <p>Already have an account? <Link href='/login' className="login-link">Log in!</Link></p>
+    </div>
   )
 }
 
-export default page
+export default Page
