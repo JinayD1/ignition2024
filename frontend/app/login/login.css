@@ -44,7 +44,7 @@ body {
     border: none;
     border-radius: 5px;
     background-color: white;
-    color: white;
+    color: black;
   }
   
   input[type="submit"] {
@@ -116,5 +116,13 @@ body {
   }
   
   .remember-forgot a:hover, .signup-link:hover, .login-link:hover {
+    text-decoration: underline;
+  }
+
+  .terms-of-service a, .remember-forgot a {
+    color: #f0ad4e; /* This is the orange color used for other elements */
+  }
+  
+  .terms-of-service a:hover, .remember-forgot a:hover {
     text-decoration: underline;
   }
