@@ -4,7 +4,7 @@ import os
 import google.generativeai as genai
 from flask import Flask, jsonify, request, send_file, send_from_directory
 
-API_KEY = 'add your api key here'
+API_KEY = 'AIzaSyDVYH_1-EdSYMZNoXQwptplVj3aUcHPn3A'
 
 genai.configure(api_key=API_KEY)
 
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return send_file('web/index.html')
+    return send_file('templates/index.html')
 
 
 @app.route("/api/generate", methods=["POST"])
@@ -44,11 +44,15 @@ def generate_api():
 def serve_static(path):
     return send_from_directory('web', path)
 
+
+@app.route('/generate_quiz', methods=["POST"])
 def generate_quiz():
+
     if request.method == "POST":
         reqJson = request.get_json()
         notes = reqJson.get('notes')
-        model = genai.GenerativeModel(model_name='chat-bison')
+
+        model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = f"Create a 5-question multiple-choice quiz based on the following notes:\n\n{notes}"
         try:
             response = model.generate_content(prompt, stream=False)
@@ -73,4 +77,4 @@ def parse_quiz(response):
     return quiz
 
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get('PORT', 80)))
+    app.run(debug=True)
