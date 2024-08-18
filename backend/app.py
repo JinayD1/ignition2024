@@ -124,7 +124,7 @@ def update_notes(id):
             GetNoteDoc = NoteDoc.query.get_or_404(id)
             return {'content': f"{GetNoteDoc.content}"}
         except:
-            return {'error': 'no notes'}
+            return {'error': 'problem'}
 
 
 

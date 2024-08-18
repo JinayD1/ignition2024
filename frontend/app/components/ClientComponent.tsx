@@ -6,30 +6,7 @@ import 'react-quill/dist/quill.snow.css'
 import TurndownService from 'turndown'
 import { marked } from 'marked'
 import "./ClientComponent.css"
-
-// Turndown (HTML --> Markdown)
-const turndownService = new TurndownService()
-
-const htmlToMarkdown = (html: string): string => {
-    const result = turndownService.turndown(html)
-    console.log(result)
-    return result
-}
-
-// const html = '<p style="color: red;"><strong>Hello</strong> <em>World</em></p>'
-// const markdown = htmlToMarkdown(html)
-// console.log(markdown) 
-
-// marked (Markdown --> HTML)
-const markdownToHtml = async (markdown: string): Promise<string> => {
-    const result = await marked(markdown);
-    console.log(result);
-    return result;
-}
-
-// const markdown2 = '**Hello** *World*'
-// const html2 = markdownToHtml(markdown)
-// console.log(html) // Outputs: <strong>Hello</strong> <em>World</em>
+import { htmlToMarkdown, markdownToHtml } from '@/actions'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -40,7 +17,6 @@ const MarkdownEditor: React.FC<{ id: number, initialContent: string, onSave: (id
     
     const handleSave = useCallback(() => {
         setContent(editContent)
-        console.log(editContent)
         onSave(id, editContent)
         setIsEditing(false)
     }, [editContent, onSave, id])
@@ -83,10 +59,8 @@ const MarkdownEditor: React.FC<{ id: number, initialContent: string, onSave: (id
 const editorModules = {
     toolbar: [
         [{ 'header': [1, 2, 3, false] }],
-        [{ 'font': [] }],
         [{ 'size': ['small', false, 'large', 'huge'] }], // Custom font size option
         ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         [{ 'align': [] }],
         ['link', 'image'],

@@ -14,7 +14,7 @@ export const defaultSession:SessionData = {
 
 export const sessionOptions: SessionOptions = {
     password: process.env.SECRET_KEY!,
-    cookieName: "ilyaas-web-session",
+    cookieName: "upnotes-ai-session",
     cookieOptions: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

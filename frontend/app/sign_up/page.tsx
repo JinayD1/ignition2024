@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import "./signup.css"
+import { login } from '@/actions'
 
 const Page = () => {
   const [email, setEmail] = useState('')
@@ -17,6 +18,7 @@ const Page = () => {
     body: JSON.stringify({ email: email, password: password })})
     .then(reqJson => reqJson.json())
     .then(resdata => setMessage(resdata.message))
+    .then(() => login(email, password))
   }
 
   return (
