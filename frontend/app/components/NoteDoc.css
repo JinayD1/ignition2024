@@ -1,0 +1,46 @@
+.note-doc-container {
+    display: inline-block;
+    margin: 15px;
+    transition: all 0.3s ease;
+}
+
+.note-doc {
+    width: 150px;
+    height: 200px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.note-doc:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.note-doc::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-style: solid;
+    border-width: 0 20px 20px 0;
+    border-color: #f0f0f0 #ffffff;
+}
+
+.note-doc-name {
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.note-doc-link {
+    text-decoration: none;
+    color: inherit;
+}

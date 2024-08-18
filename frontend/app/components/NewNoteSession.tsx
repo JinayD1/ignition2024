@@ -1,6 +1,7 @@
 "use client"
 import React, { use, useState } from 'react'
 import { getSession } from '@/actions'
+import "./NewNoteSession.css"
 
 const NewNoteSession = () => {
     const [showNoteSessionForm, setShowNoteSessionForm] = useState(false)
@@ -26,26 +27,31 @@ const NewNoteSession = () => {
         })
     }
     return (
-        <div>
+        <div className="note-session-container">
             {showNoteSessionForm && 
             <>
-                <form onSubmit={ (e) => {
+                <form className="note-form" onSubmit={(e) => {
                     e.preventDefault()
                     createNoteSession()
                 }}>
-                    <input type="text" value={noteName} onChange={e => setNoteName(e.target.value)}/>
-                    <button type='submit'>Create</button>
+                    <input 
+                        type="text" 
+                        className="note-input"
+                        value={noteName} 
+                        onChange={e => setNoteName(e.target.value)}
+                        placeholder="Enter note session name"
+                    />
+                    <button type='submit' className="submit-button">Create</button>
+                    <button onClick={() => setShowNoteSessionForm(false)} className="cancel-button">Cancel</button>
                 </form>
-                <button onClick={() => setShowNoteSessionForm(false)}>Cancel</button>
-                <p>{message}</p>
+                {message && <p className="message">{message}</p>}
             </>
             }
-            <form onSubmit={(e) => {
-                e.preventDefault()
-                setShowNoteSessionForm(true)
-                }}>
-                <button type='submit'>Create Note Session</button>
-            </form>
+            {!showNoteSessionForm &&
+                <button onClick={() => setShowNoteSessionForm(true)} className="create-button">
+                    Create Note Session
+                </button>
+            }
         </div>
     )
 }

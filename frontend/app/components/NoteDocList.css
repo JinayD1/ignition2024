@@ -1,0 +1,44 @@
+.note-doc-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #f0f0f0;
+    min-height: 20vh;
+}
+
+.note-doc-list-header {
+    width: 100%;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.note-doc-list-title {
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+.note-doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .note-doc-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+.no-docs-message {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-top: 50px;
+}

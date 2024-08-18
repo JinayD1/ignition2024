@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 import google.generativeai as genai
+import json
 
 API_KEY = 'AIzaSyDVYH_1-EdSYMZNoXQwptplVj3aUcHPn3A'
 
