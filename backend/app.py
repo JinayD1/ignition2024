@@ -102,7 +102,7 @@ def get_notes():
         except:
             return {'error': 'no notes'}
         
-@app.route('/update_notes/<int:id>', methods=['POST'])
+@app.route('/update_notes/<int:id>', methods=['POST', 'GET'])
 def update_notes(id):
     if request.method == 'POST':
         reqJson = request.get_json()
@@ -114,6 +114,12 @@ def update_notes(id):
             db.session.commit()
 
             return {'message': f"notes successfully updated: {reqJson.get('content')}"}
+        except:
+            return {'error': 'no notes'}
+    elif request.method == 'GET':
+        try:
+            GetNoteDoc = NoteDoc.query.get_or_404(id)
+            return {'content': f"{GetNoteDoc.content}"}
         except:
             return {'error': 'no notes'}
 

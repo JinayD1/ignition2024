@@ -42,7 +42,7 @@ export const login = async (email: string, password: string) => {
                     if (!response.error) {
                         console.log(response)
                         const notes = response.map((doc:{ id:number | string, name:string }) => {
-                            return doc.content ? { id: doc.id, name: doc.name, content: doc.content } : { id: doc.id, name: doc.name, content: 'empty document' }
+                            return { id: doc.id, name: doc.name}
                         })
                         session.noteSessions = notes
                         console.log(notes)
@@ -108,4 +108,45 @@ export const update_notes = async (id: number, content: string) => {
             }
         })
 
+}
+
+// export const get_a_note = async (id: number) => {
+//     const session = await getSession()
+//     let content: string;
+//     let res = await fetch(`http://192.168.2.66:5000/update_notes/${id}`, {
+//         method: "GET"
+//     })
+//     .then(res => res.json())
+//     .then(res => {
+//         if (res.error) {
+//             console.log(res.error)
+//         } else {
+//             console.log(res.content)
+//             content = res.content
+//         }
+//     })
+//     return await (content)? content : "empty document"
+// }
+
+export const get_a_note = async (id: number) => {
+    const session = await getSession();
+
+    try {
+        const res = await fetch(`http://192.168.2.66:5000/update_notes/${id}`, {
+            method: "GET"
+        });
+        
+        const data = await res.json();
+
+        if (data.error) {
+            console.log(data.error);
+            return "empty document";
+        } else {
+            console.log(data.content);
+            return data.content;
+        }
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return "empty document";
+    }
 }

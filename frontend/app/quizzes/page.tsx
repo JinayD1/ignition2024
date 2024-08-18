@@ -75,7 +75,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import NoteDocListButtonated from '../components/NoteDocListButtons';
-import { getSession } from '@/actions';
+import { getSession, get_a_note } from '@/actions';
 
 const Page: React.FC = () => {
     const [notes, setNotes] = useState<string>('');
@@ -88,9 +88,9 @@ const Page: React.FC = () => {
         console.log("docSelector state:", docSelector);
     }, [docSelector]);
 
-    async function generateQuiz(id: string) {
+    async function generateQuiz(id: number) {
         const session = await getSession()
-        const notes = await (session.noteSessions).find(item => item.id == id)
+        const notes = await get_a_note(id)
         try {
             const response = await fetch('http://192.168.2.66:5000/generate_quiz', {
                 method: 'POST',
@@ -130,7 +130,7 @@ const Page: React.FC = () => {
                     generateQuiz(selectedDoc)
                     }}>
                     <NoteDocListButtonated handleChange={setSelectedDoc} State={selectedDoc}/>
-                    <button type='submit'>SelectDoc</button>
+                    <button type='submit'>Generate Quiz</button>
                 </form>
             }
 

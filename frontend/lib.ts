@@ -5,7 +5,7 @@ export interface SessionData {
     userId?:number,
     email?: string
     logged_in?: boolean,
-    noteSessions?: { id:number, name:string, content:string}[],
+    noteSessions?: { id:number, name:string}[],
 }
 
 export const defaultSession:SessionData = {
