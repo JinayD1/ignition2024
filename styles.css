@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+    /* Blue themed gradient */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    text-align: center;
+    color: white;
+    max-width: 800px;
+}
+
+.main-heading {
+    font-size: 4rem;
+    font-weight: 700;
+    margin: 0;
+    overflow: hidden; /* Typewriter effect */
+    white-space: nowrap;
+    box-sizing: border-box;
+    width: 100%; /* Keeps text from moving after typing */
+}
+
+.caption {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+.login-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #2A5298;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #1E3C72;
+}
+
+/* Typewriter animation */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.typewriter {
+    animation: typing 3.5s;
+}
