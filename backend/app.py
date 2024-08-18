@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, url_for, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -164,6 +166,23 @@ def generate_quiz():
             response = model.generate_content(prompt, stream=False)
             quiz = parse_quiz(response)
             return jsonify({'quiz': quiz})
+        except Exception as e:
+            return jsonify({"error": str(e)})
+
+        
+@app.route('/chat', methods=['POST'])
+def chat():
+    if request.method == "POST":
+        reqJson = request.get_json()
+        notes = reqJson.get('question')
+
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = f"Talk to me and if i ask u, answer questions pretending to my insightful and understandable teacher, also be concise:\n\n{notes}"
+
+        response = model.generate_content(prompt, stream=False).text
+
+        try:
+            return json.dumps(response, ensure_ascii=False)
         except Exception as e:
             return jsonify({"error": str(e)})
 

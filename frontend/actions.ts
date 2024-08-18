@@ -150,3 +150,30 @@ export const get_a_note = async (id: number) => {
         return "empty document";
     }
 }
+
+export const chat_bot = async (question: string) => {
+
+    try {
+        const res = await fetch(`http://192.168.2.66:5000/chat`, {
+            method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: question })
+        });
+        
+        const response = await res.json();
+
+        if (response.error) {
+            console.log(response.error);
+            return "Request failed";
+        } else {
+            console.log('response: ', response)
+            console.log(response.response);
+            return response;
+        }
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return "Request failed";
+    }
+}

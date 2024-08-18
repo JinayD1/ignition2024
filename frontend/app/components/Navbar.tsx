@@ -28,7 +28,7 @@ const Navbar = async () => {
                     <>  
                          <li><Link href='/note_session'>Note Sessions</Link></li>
                         <li><Link href='/quizzes'>Quizzes</Link></li>
-                        <li><Link href='/'>ChatBot</Link></li>
+                        <li><Link href='/chatbot'>ChatBot</Link></li>
                     </>
                 }
             </ul>
