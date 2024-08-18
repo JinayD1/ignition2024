@@ -2,19 +2,22 @@
 import React, { useState, useEffect } from 'react';
 import NoteDocListButtonated from '../components/NoteDocListButtons';
 import { getSession, get_a_note } from '@/actions';
+import "./quizzes.css";
 
 const Page: React.FC = () => {
     const [notes, setNotes] = useState<string>('');
     const [quiz, setQuiz] = useState<{ question: string, options: string[] }[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [docSelector, setDocSelector] = useState<boolean>(false);
-    const [selectedDoc, setSelectedDoc] = useState<string>('')
+    const [selectedDoc, setSelectedDoc] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         console.log("docSelector state:", docSelector);
     }, [docSelector]);
 
     async function generateQuiz(id: number) {
+        setIsLoading(true);
         const session = await getSession()
         const notes = await get_a_note(id)
         try {
@@ -38,39 +41,49 @@ const Page: React.FC = () => {
         } catch (err) {
             setError('An unexpected error occurred');
             setQuiz([]);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     return (
-        <div>
-            <h1>Prep Quiz Generator</h1>
-            <form onSubmit={(e) => {
+        <div className="quiz-generator">
+            <h1 className="quiz-generator__title">Prep Quiz Generator</h1>
+            <form className="quiz-generator__form" onSubmit={(e) => {
                 e.preventDefault();
                 setDocSelector(true);
             }}>
-                <button type="submit">Select Note Document</button>
+                <button className="quiz-generator__button" type="submit">Select Note Document</button>
             </form>
-            {docSelector &&
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    generateQuiz(parseInt(selectedDoc))
+            <div className={`quiz-generator__dropdown-container ${docSelector ? 'active' : ''}`}>
+                {docSelector &&
+                    <form className="quiz-generator__form" onSubmit={(e) => {
+                        e.preventDefault()
+                        generateQuiz(parseInt(selectedDoc))
                     }}>
-                    <NoteDocListButtonated handleChange={setSelectedDoc} State={selectedDoc}/>
-                    <button type='submit'>Generate Quiz</button>
-                </form>
-            }
+                        <div className="quiz-generator__dropdown">
+                            <NoteDocListButtonated handleChange={setSelectedDoc} State={selectedDoc}/>
+                        </div>
+                        <button className="quiz-generator__button" type='submit' disabled={isLoading}>
+                            {isLoading ? 'Generating...' : 'Generate Quiz'}
+                        </button>
+                    </form>
+                }
+            </div>
 
-            {error && <div className="error">Error: {error}</div>}
+            {isLoading && <div className="quiz-generator__loader"></div>}
 
-            <div id="quizContainer" className="quiz-container" style={{ display: quiz.length > 0 ? 'block' : 'none' }}>
+            {error && <div className="quiz-generator__error">Error: {error}</div>}
+
+            <div id="quizContainer" className="quiz-generator__container" style={{ display: quiz.length > 0 ? 'block' : 'none' }}>
                 {quiz.map((q, index) => (
-                    <div key={index} className="quiz-item">
-                        <div className="question">
+                    <div key={index} className="quiz-generator__item">
+                        <div className="quiz-generator__question">
                             Q{index + 1}: {q.question}
                         </div>
-                        <div className="options">
+                        <div className="quiz-generator__options">
                             {q.options.map((option, optionIndex) => (
-                                <div key={optionIndex} className="option">
+                                <div key={optionIndex} className="quiz-generator__option">
                                     {option}
                                 </div>
                             ))}
