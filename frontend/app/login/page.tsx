@@ -84,18 +84,9 @@ const Page = () => {
           value="SIGN IN" 
         />
         <div className="remember-forgot">
-          <label>
-            <input type="checkbox"/> Remember Me
-          </label>
-          <a href="#">Forgot Password</a>
         </div>
       </form>
       {message && <h6>{message}</h6>}
-      <p>— Or Sign In With —</p>
-      <div className="social-login">
-        <button>Facebook</button>
-        <button>Google</button>
-      </div>
       <p>Don't have an account? <Link href='/sign_up' className="signup-link">Sign up!</Link></p>
     </div>
   );

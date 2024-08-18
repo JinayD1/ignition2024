@@ -12,9 +12,7 @@ const Navbar = async () => {
     return (
         <nav className="navbar">
             <div className="logo">
-                <Image src="/put logo source in here" alt="Logo" width={80} height={80} />
-                <h3>website name</h3>
-                <p>placeholderidk</p>
+                <h3>UpNote.ai</h3>
             </div>
             <ul className="nav-links">
                 <li><Link href='/'>Home</Link></li>

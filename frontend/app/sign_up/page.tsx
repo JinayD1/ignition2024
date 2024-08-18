@@ -33,15 +33,10 @@ const Page = () => {
         <input type="password" placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}/>
         <input type="submit" value="SIGN UP"/>
         <div className="terms-of-service">
-          <a href="#">Terms of Service</a>
+          <a href="https://docs.google.com/document/d/1Hnuz5L6raMIMWcWMIUZffffKm1vs0NEPrgEaKNrz6Cw/edit?usp=sharing">Terms of Service</a>
         </div>
       </form>
       {message && <h6>{message}</h6>}
-      <p>— Or Sign Up With —</p>
-      <div className="social-login">
-        <button>Facebook</button>
-        <button>Google</button>
-      </div>
       <p>Already have an account? <Link href='/login' className="login-link">Log in!</Link></p>
     </div>
   )
