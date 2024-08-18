@@ -1,66 +1,96 @@
-// import React from 'react'
+// "use client"
+// import React, { useState } from 'react';
+// import NoteDocList from '../components/NoteDocList';
+// import NoteDocListButtonated from '../components/NoteDocListButtons';
 
-// const page = () => {
+// const Page: React.FC = () => {
+//     const [notes, setNotes] = useState<string>('');
+//     const [quiz, setQuiz] = useState<{ question: string, options: string[] }[]>([]);
+//     const [error, setError] = useState<string | null>(null);
+//     const [docSelector, setDocSelector] = useState<boolean>(false)
+
 //     async function generateQuiz() {
-//         const notes = document.getElementById('notesInput').value;
-//         const response = await fetch('/generate_quiz', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ notes }),
-//         });
-//         const data = await response.json();
+//         try {
+//             const response = await fetch('http://192.168.2.66:5000/generate_quiz', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify({ notes }),
+//             });
+
+//             const data: { quiz?: { question: string, options: string[] }[], error?: string } = await response.json();
 
 //             if (data.quiz) {
-//                 const quizContainer = document.getElementById('quizContainer');
-//                 quizContainer.style.display = 'block';
-//                 quizContainer.innerHTML = '';
-//                 data.quiz.forEach((q, index) => {
-//                     const questionDiv = document.createElement('div');
-//                     questionDiv.className = 'question';
-//                     questionDiv.textContent = `Q${index + 1}: ${q.question}`;
-
-//                     const optionsDiv = document.createElement('div');
-//                     optionsDiv.className = 'options';
-
-//                     q.options.forEach(option => {
-//                         const optionDiv = document.createElement('div');
-//                         optionDiv.className = 'option';
-//                         optionDiv.textContent = option;
-//                         optionsDiv.appendChild(optionDiv);
-//                     });
-
-//                     quizContainer.appendChild(questionDiv);
-//                     quizContainer.appendChild(optionsDiv);
-//                 });
+//                 setQuiz(data.quiz);
+//                 setError(null);
 //             } else if (data.error) {
-//                 alert('Error: ' + data.error);
+//                 setError(data.error);
+//                 setQuiz([]);
 //             }
+//         } catch (err) {
+//             setError('An unexpected error occurred');
+//             setQuiz([]);
 //         }
+//     }
 
 //     return (
 //         <div>
 //             <h1>Prep Quiz Generator</h1>
-//             <textarea id="notesInput" placeholder="Enter your notes here..."></textarea>
-//             <br/>
+//             <form onSubmit={() => setDocSelector(true)}>
+//                 <button type='submit'>Select Note Document</button>
+//             </form>
+//             {docSelector && 
+//             <form onSubmit={() => {}}>
+//                 <NoteDocListButtonated/>
+//             </form>
+//             }
+//             <br />
 //             <button onClick={generateQuiz}>Generate Quiz</button>
 
-//             <div id="quizContainer" className="quiz-container" style={{display: 'none'}}></div>
+//             {error && <div className="error">Error: {error}</div>}
+
+//             <div id="quizContainer" className="quiz-container" style={{ display: quiz.length > 0 ? 'block' : 'none' }}>
+//                 {quiz.map((q, index) => (
+//                     <div key={index} className="quiz-item">
+//                         <div className="question">
+//                             Q{index + 1}: {q.question}
+//                         </div>
+//                         <div className="options">
+//                             {q.options.map((option, optionIndex) => (
+//                                 <div key={optionIndex} className="option">
+//                                     {option}
+//                                 </div>
+//                             ))}
+//                         </div>
+//                     </div>
+//                 ))}
+//             </div>
 //         </div>
-//     )
+//     );
 // }
 
-// export default page
-"use client"
-import React, { useState } from 'react';
+// export default Page;
+
+"use client";
+import React, { useState, useEffect } from 'react';
+import NoteDocListButtonated from '../components/NoteDocListButtons';
+import { getSession } from '@/actions';
 
 const Page: React.FC = () => {
     const [notes, setNotes] = useState<string>('');
     const [quiz, setQuiz] = useState<{ question: string, options: string[] }[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [docSelector, setDocSelector] = useState<boolean>(false);
+    const [selectedDoc, setSelectedDoc] = useState<string>('')
 
-    async function generateQuiz() {
+    useEffect(() => {
+        console.log("docSelector state:", docSelector);
+    }, [docSelector]);
+
+    async function generateQuiz(id: string) {
+        const session = await getSession()
+        const notes = await (session.noteSessions).find(item => item.id == id)
         try {
             const response = await fetch('http://192.168.2.66:5000/generate_quiz', {
                 method: 'POST',
@@ -88,14 +118,21 @@ const Page: React.FC = () => {
     return (
         <div>
             <h1>Prep Quiz Generator</h1>
-            <textarea
-                id="notesInput"
-                placeholder="Enter your notes here..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-            />
-            <br />
-            <button onClick={generateQuiz}>Generate Quiz</button>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setDocSelector(true);
+            }}>
+                <button type="submit">Select Note Document</button>
+            </form>
+            {docSelector &&
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    generateQuiz(selectedDoc)
+                    }}>
+                    <NoteDocListButtonated handleChange={setSelectedDoc} State={selectedDoc}/>
+                    <button type='submit'>SelectDoc</button>
+                </form>
+            }
 
             {error && <div className="error">Error: {error}</div>}
 
