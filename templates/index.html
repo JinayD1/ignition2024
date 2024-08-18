@@ -72,9 +72,17 @@
     <h1>Prep Quiz Generator</h1>
     <textarea id="notesInput" placeholder="Enter your notes here..."></textarea>
     <br>
+
+    <textarea id="chat"></textarea>
+    <br>
+    <br>
     <button onclick="generateQuiz()">Generate Quiz</button>
+<br>
+    <button onclick="chat()">Chat</button>
 
     <div id="quizContainer" class="quiz-container" style="display: none;"></div>
+
+    <p id="chatData"></p>
 
     <script>
         async function generateQuiz() {
@@ -96,7 +104,7 @@
                 data.quiz.forEach((q, index) => {
                     const questionDiv = document.createElement('div');
                     questionDiv.className = 'question';
-                    questionDiv.textContent = `Q${index + 1}: ${q.question}`;
+                    questionDiv.textContent = `Q${index}: ${q.question}`;
 
                     const optionsDiv = document.createElement('div');
                     optionsDiv.className = 'options';
@@ -115,6 +123,30 @@
                 alert('Error: ' + data.error);
             }
         }
+
+
+        async function chat(){
+            const question = document.getElementById('chat').value;
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question }),
+            });
+
+            const data = await response.json();
+
+            // if(data.response){
+                document.getElementById('chatData').innerText = document.getElementById('chatData').innerText+"\n\n"+question+'\n\n'+JSON.stringify(data)
+            // }
+            // else if (data.error){
+            //     alert('Error: ' + data.error);
+            // }
+
+
+        }
+
     </script>
 </body>
 </html>
